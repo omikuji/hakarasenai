@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — Google Analytics Opt-out",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "Hindrer Google Analytics i å måle deg: forteller at du har reservert deg, og blokkerer dataene den likevel ville sendt.",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "Blokkerer — ingenting går til Google Analytics",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "Unntatt — gjør ingenting på dette nettstedet",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "Unnta dette nettstedet",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "Beskytt dette nettstedet igjen",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "Ikke aktiv på denne siden",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "Virker bare på http- og https-sider",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "Ingen tilgang til nettsteder er gitt",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "Gi denne utvidelsen tilgang til alle nettsteder i about:addons",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "Blokkerer data til Google Analytics og forteller GA-koden på siden at du har reservert deg.",
+    "description": "Popup footer: what the extension does."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — Google Analytics Opt-out",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "Không để Google Analytics đo lường bạn: báo rằng bạn đã từ chối và chặn dữ liệu nó vẫn định gửi.",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "Đang chặn — không có gì được gửi tới Google Analytics",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "Đã loại trừ — không làm gì trên trang này",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "Loại trừ trang này",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "Bảo vệ lại trang này",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "Không hoạt động trên trang này",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "Chỉ hoạt động trên trang http và https",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "Chưa được cấp quyền truy cập các trang",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "Cho phép tiện ích này truy cập mọi trang trong about:addons",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "Chặn dữ liệu gửi tới Google Analytics và báo cho mã GA trên trang biết bạn đã từ chối.",
+    "description": "Popup footer: what the extension does."
+  }
+}

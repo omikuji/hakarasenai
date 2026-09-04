@@ -1,7 +1,7 @@
 NAME    = hakarasenai
 VERSION = $(shell python3 -c "import json;print(json.load(open('manifest.json'))['version'])")
 ZIP     = dist/$(NAME)-$(VERSION).zip
-FILES   = manifest.json src rules icons _locales LICENSE README.md README.ja.md
+FILES   = manifest.json src rules icons _locales LICENSE README.md
 
 .PHONY: build lint test unit test-browser setup-test run run-android sign clean
 
@@ -28,7 +28,8 @@ setup-test:
 
 # The targets below use web-ext; npx downloads it on first run.
 # Tests and build output are not part of the add-on.
-IGNORE = --ignore-files=dist/** --ignore-files=test/** --ignore-files=.test/**
+IGNORE = --ignore-files=dist/** --ignore-files=test/** --ignore-files=.test/** \
+         --ignore-files=translations/** --ignore-files=Tools/** --ignore-files=.github/**
 
 lint:
 	npx --yes web-ext lint --source-dir=. $(IGNORE)

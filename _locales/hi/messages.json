@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — Google Analytics ऑप्ट-आउट",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "Google Analytics को आपको मापने नहीं देता: उसे ऑप्ट-आउट की सूचना देता है और फिर भी जाने वाले डेटा को रोकता है।",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "रोका जा रहा है — Google Analytics को कुछ नहीं भेजा जा रहा",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "बाहर रखा गया — इस साइट पर कुछ नहीं करता",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "इस साइट को बाहर रखें",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "इस साइट को फिर सुरक्षित करें",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "इस पेज पर सक्रिय नहीं",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "केवल http और https पेजों पर काम करता है",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "साइटों तक पहुँच नहीं दी गई",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "about:addons में इस एक्सटेंशन को सभी साइटों तक पहुँच दें",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "Google Analytics को भेजे जाने वाले डेटा को रोकता है और पेज के GA कोड को बताता है कि आपने ऑप्ट-आउट किया है।",
+    "description": "Popup footer: what the extension does."
+  }
+}

@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — Google Analytics Opt-out",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "Zabrání Google Analytics, aby vás měřil: oznámí mu odhlášení a zablokuje data, která by přesto odeslal.",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "Blokuje se — do Google Analytics nic nejde",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "Vyloučeno — na tomto webu nedělá nic",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "Vyloučit tento web",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "Znovu chránit tento web",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "Na této stránce není aktivní",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "Funguje jen na stránkách http a https",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "Přístup k webům nebyl udělen",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "Povolte tomuto rozšíření přístup ke všem webům v about:addons",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "Blokuje data odesílaná do Google Analytics a sděluje kódu GA na stránce, že jste se odhlásili.",
+    "description": "Popup footer: what the extension does."
+  }
+}

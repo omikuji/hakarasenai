@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — Google Analytics Opt-out",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "Mencegah Google Analytics mengukur Anda: memberi tahu bahwa Anda menolak dan memblokir data yang tetap akan dikirim.",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "Memblokir — tidak ada yang dikirim ke Google Analytics",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "Dikecualikan — tidak melakukan apa pun di situs ini",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "Kecualikan situs ini",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "Lindungi situs ini lagi",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "Tidak aktif di halaman ini",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "Hanya bekerja di halaman http dan https",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "Akses ke situs belum diberikan",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "Izinkan ekstensi ini mengakses semua situs di about:addons",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "Memblokir data yang dikirim ke Google Analytics dan memberi tahu kode GA di halaman bahwa Anda menolak.",
+    "description": "Popup footer: what the extension does."
+  }
+}

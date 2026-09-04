@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — ปฏิเสธการวัดผลของ Google Analytics",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "ไม่ให้ Google Analytics วัดผลคุณ: แจ้งว่าคุณปฏิเสธแล้ว และบล็อกข้อมูลที่จะถูกส่งออกไปอยู่ดี",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "กำลังบล็อก — ไม่มีข้อมูลส่งไปยัง Google Analytics",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "ยกเว้นอยู่ — ไม่ทำอะไรบนเว็บไซต์นี้",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "ยกเว้นเว็บไซต์นี้",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "ปกป้องเว็บไซต์นี้อีกครั้ง",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "ไม่ทำงานบนหน้านี้",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "ทำงานเฉพาะหน้า http และ https เท่านั้น",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "ยังไม่ได้ให้สิทธิ์เข้าถึงเว็บไซต์",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "อนุญาตให้ส่วนขยายนี้เข้าถึงทุกเว็บไซต์ได้ที่ about:addons",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "บล็อกข้อมูลที่ส่งไปยัง Google Analytics และแจ้งโค้ด GA บนหน้าเว็บว่าคุณปฏิเสธการวัดผลแล้ว",
+    "description": "Popup footer: what the extension does."
+  }
+}

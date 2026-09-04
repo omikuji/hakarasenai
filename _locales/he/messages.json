@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — ביטול הסכמה ל-Google Analytics",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "מונע מ-Google Analytics למדוד אותך: מודיע לו שביטלת את ההסכמה וחוסם את הנתונים שהיה שולח בכל זאת.",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "חוסם — שום דבר לא נשלח ל-Google Analytics",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "מוחרג — לא עושה כלום באתר הזה",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "החרג את האתר הזה",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "להגן שוב על האתר הזה",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "לא פעיל בדף הזה",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "עובד רק בדפי http ו-https",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "לא ניתנה גישה לאתרים",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "אפשר להרחבה גישה לכל האתרים ב-about:addons",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "חוסם נתונים הנשלחים ל-Google Analytics ומודיע לקוד GA בדף שביטלת את ההסכמה.",
+    "description": "Popup footer: what the extension does."
+  }
+}
