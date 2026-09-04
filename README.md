@@ -218,6 +218,11 @@ through Mozilla either way:
 
 Sources do not need to be attached: nothing here is minified or bundled.
 
+The listing copy — summary, description, categories, privacy policy and
+reviewer notes, in English and Japanese — lives in
+[`docs/amo-listing.md`](docs/amo-listing.md), and the store screenshots are
+generated from the real popup by `Tools/make-screenshots.py`.
+
 ## Troubleshooting
 
 - **`_gaUserPrefs` is undefined** — site access was probably revoked. In
