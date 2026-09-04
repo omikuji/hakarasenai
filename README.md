@@ -42,6 +42,11 @@ make build   # → dist/hakarasenai-<version>.zip
 
 Firefox 128 以上が必要(`world: "MAIN"` の content script を使うため)。
 
+`make lint` は警告を 2 本出すが、これは想定どおり。
+データ収集の申告(`data_collection_permissions: none`)は Firefox 140 以降でしか読まれないキーで、
+`strict_min_version` を 128 にしているぶん「古い版では未対応」と言われるだけ。
+128〜139 では単に無視されるので、対応範囲を狭めてまで消す必要はないと判断した。
+
 ## 仕組み
 
 ### 一段目 — オプトアウトを伝える
@@ -96,9 +101,28 @@ declarativeNetRequest の静的ルール 5 本だけ(`rules/ga.json`)。
 - **Measurement Protocol による純サーバーサイド送信**(ブラウザを一切通らないもの)は、
   ブラウザ拡張の原理的に止められない。
 
+## 効いているか確かめる
+
+1. GA を使っているサイトを開く
+2. `F12` → **ネットワーク** タブで `collect` で絞り込む
+3. `www.google-analytics.com/g/collect` などが **NS_ERROR_ABORTED / ブロック** になっていればニ段目が効いている
+4. コンソールで `_gaUserPrefs.ioo()` と打って `true` が返れば一段目も効いている
+   (`_gaUserPrefs is not defined` なら content script が登録できていない → 下記)
+
+## トラブルシュート
+
+- **`_gaUserPrefs` が undefined** → サイトへのアクセス許可が外れている可能性。
+  `about:addons` → この拡張 → 「許可」で「すべてのサイトのデータへのアクセス」を ON にする。
+  許可を戻せば自動で再登録される
+- **Firefox 127 以下で動かない** → `world: "MAIN"` の content script が Firefox 128 からのため。
+  128 以上に上げる
+- **除外したのに止まらない/止まる** → 除外はドメイン単位。
+  サブドメインごと外れる点と、除外の反映はページ再読み込み後である点に注意
+
 ## プライバシー
 
-この拡張は**何も収集せず、どこにも送信しない**。
+この拡張は**何も収集せず、どこにも送信しない**
+(マニフェストの `data_collection_permissions` も `none` で申告している)。
 外部との通信もしない。ブラウザに保存するのは、あなたが除外したサイトのホスト名の一覧
 (`storage.local`)だけで、これも端末内から出ない。
 
