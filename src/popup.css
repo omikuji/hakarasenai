@@ -1,0 +1,70 @@
+:root {
+  color-scheme: light dark;
+  --fg: #1f2933;
+  --dim: #6b7480;
+  --bg: #ffffff;
+  --line: #dfe3e8;
+  --on: #1f7a4d;
+  --off: #8a8f98;
+  --btn: #f2f4f6;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --fg: #e8eaed;
+    --dim: #9aa0a6;
+    --bg: #23262b;
+    --line: #3a3f46;
+    --on: #6cc48f;
+    --off: #9aa0a6;
+    --btn: #2f333a;
+  }
+}
+
+body {
+  width: 260px;
+  margin: 0;
+  padding: 14px;
+  background: var(--bg);
+  color: var(--fg);
+  font: 13px/1.6 system-ui, sans-serif;
+}
+
+.host {
+  margin: 0;
+  font-weight: 600;
+  word-break: break-all;
+}
+
+.state {
+  margin: 2px 0 12px;
+  font-size: 12px;
+  color: var(--dim);
+}
+.state.on {
+  color: var(--on);
+}
+.state.off {
+  color: var(--off);
+}
+
+button {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid var(--line);
+  border-radius: 6px;
+  background: var(--btn);
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+button:hover {
+  border-color: var(--dim);
+}
+
+.note {
+  margin: 12px 0 0;
+  padding-top: 10px;
+  border-top: 1px solid var(--line);
+  font-size: 11px;
+  color: var(--dim);
+}

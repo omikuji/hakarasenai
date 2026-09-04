@@ -1,0 +1,47 @@
+{
+  "manifest_version": 3,
+  "name": "Hakarasenai — Google Analytics オプトアウト",
+  "version": "1.0.0",
+  "description": "Google Analytics に計測データを送らせない。オプトアウト通知と送信ブロックの二段構え。サイトごとに除外もできる。",
+  "author": "omikuji",
+  "homepage_url": "https://github.com/omikuji/hakarasenai",
+
+  "browser_specific_settings": {
+    "gecko": {
+      "id": "hakarasenai@omikuji",
+      "strict_min_version": "128.0"
+    }
+  },
+
+  "icons": {
+    "48": "icons/icon.svg",
+    "96": "icons/icon.svg"
+  },
+
+  "permissions": [
+    "declarativeNetRequest",
+    "scripting",
+    "storage"
+  ],
+  "host_permissions": ["<all_urls>"],
+
+  "action": {
+    "default_title": "Hakarasenai",
+    "default_icon": { "48": "icons/icon.svg" },
+    "default_popup": "src/popup.html"
+  },
+
+  "background": {
+    "scripts": ["src/background.js"]
+  },
+
+  "declarative_net_request": {
+    "rule_resources": [
+      {
+        "id": "ga",
+        "enabled": true,
+        "path": "rules/ga.json"
+      }
+    ]
+  }
+}
