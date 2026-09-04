@@ -123,6 +123,37 @@ for instance.
    `_gaUserPrefs is not defined` means the content script did not register; see
    Troubleshooting
 
+## Testing
+
+```bash
+make setup-test   # once: Firefox tarball, geckodriver, and a venv with selenium
+make test
+```
+
+`setup-test` installs into `~/opt/firefox`, `~/.local/bin` and `.test/` — no
+system packages, nothing needs root.
+
+**`make unit`** runs the exclusion logic against a stub of the WebExtension
+APIs. Node only, no browser.
+
+**`make test-browser`** drives a real headless Firefox twice — once with the
+extension loaded, once without — and compares the two. The control run is the
+point: it proves the network is actually reachable and that the opt-out flag is
+genuinely coming from the extension. It checks that
+
+- the opt-out flag is set, **including on a page served with a strict CSP** —
+  the exact case where Google's own add-on silently fails
+- a site that assigns to `_gaUserPrefs` cannot opt itself back in, and does not
+  throw while trying
+- GA4, Universal Analytics and regional `/collect` hits are blocked, under a
+  strict CSP as well
+- `gtag.js` still loads, and a same-origin `/collect` is left alone — that is,
+  the rules are not over-blocking
+
+The Android build has not been exercised on a physical device. Every API it uses
+was checked against MDN's browser-compat-data and mirrors desktop support, but
+that is a paper check, not a test.
+
 ## What it cannot do
 
 - **Server-side GTM / first-party measurement.** If a site collects on its own

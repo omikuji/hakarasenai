@@ -114,6 +114,33 @@ declarativeNetRequest の静的ルール 5 本だけ(`rules/ga.json`)。
 4. コンソールで `_gaUserPrefs.ioo()` が `true` を返せば一段目も効いている。
    `_gaUserPrefs is not defined` なら content script が登録できていない → トラブルシュートへ
 
+## テスト
+
+```bash
+make setup-test   # 初回だけ: Firefox 本体・geckodriver・selenium 入り venv
+make test
+```
+
+`setup-test` の入れ先は `~/opt/firefox`・`~/.local/bin`・`.test/`。
+システムパッケージには触らないので root は要らない。
+
+**`make unit`** は除外まわりのロジックを WebExtension API のスタブに対して回す。node だけで動く。
+
+**`make test-browser`** は実際の headless Firefox を 2 回起動し、
+**拡張を入れた状態と入れない状態を比べる**。この対照実行が肝で、
+これによって「そもそもネットワークが届いているか」と
+「そのフラグは本当に拡張が置いたものか」が担保される。見ているのは:
+
+- オプトアウトのフラグが立つこと。**CSP の厳しいページでも立つこと**
+  — Google 公式アドオンが黙って失敗するのがまさにこのケース
+- サイトが `_gaUserPrefs` に代入してもオプトインに戻せないこと、かつそれで例外が飛ばないこと
+- GA4・ユニバーサルアナリティクス・地域別の `/collect` がブロックされること(CSP 下でも)
+- `gtag.js` は読み込めること、同一オリジンの `/collect` は素通しであること
+  — つまり過剰ブロックしていないこと
+
+Android 版は実機で動かしていない。使っている API は MDN の browser-compat-data で
+すべてデスクトップと同等(mirror)であることを確認したが、これは机上の確認であってテストではない。
+
 ## 効かないケース(正直なところ)
 
 - **サーバーサイド GTM / ファーストパーティ計測**
