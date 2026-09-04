@@ -138,6 +138,34 @@ transmitted anywhere and is removed when you uninstall the extension.
 
 The manifest declares this as `data_collection_permissions: { required: ["none"] }`.
 
+## Version notes (v1.2.0, first release)
+
+### English
+
+First public release.
+
+- Sets the opt-out flag Google Analytics reads itself, from a content script in
+  the page's own world, so a strict Content Security Policy cannot block it the
+  way it blocks the official add-on's injected script tag.
+- Blocks the Google Analytics collection endpoints as a second layer, so nothing
+  is sent even if the flag is ever defeated.
+- Any site can be excluded from the toolbar button, subdomains included.
+- Interface in 26 languages, chosen automatically from the browser.
+- Firefox 128 or newer, on desktop and on Android.
+
+### 日本語
+
+初回リリースです。
+
+- Google Analytics 自身が参照するオプトアウトのフラグを、ページと同じ world で
+  動く content script から設定します。公式アドオンのように script 要素を
+  挿し込まないため、厳しい Content Security Policy にブロックされません。
+- 二段目として Google Analytics の計測エンドポイントをブロックします。
+  万一フラグが無効化されても、データは送信されません。
+- ツールバーのボタンから、サイトごとに除外できます(サブドメインを含む)。
+- UI は 26 言語。ブラウザーの設定から自動で選ばれます。
+- デスクトップ・Android とも Firefox 128 以上。
+
 ## Notes for reviewers
 
 - Nothing is minified, bundled or obfuscated. What is in the ZIP is the source,
