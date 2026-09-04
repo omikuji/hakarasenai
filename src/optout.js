@@ -1,31 +1,33 @@
-// ページ側(MAIN world)で document_start に走る。
+// Runs in the page (MAIN world) at document_start.
 //
-// Google の計測スクリプト(ga.js / analytics.js / gtag.js)は、送信前に
-// window._gaUserPrefs.ioo() を見て「オプトアウト済みなら送らない」という
-// 分岐を持っている。Google 公式のオプトアウトアドオンと同じ仕組み。
+// Google's measurement scripts (ga.js / analytics.js / gtag.js) all check
+// window._gaUserPrefs.ioo() before sending, and give up if it returns true.
+// That is the same hook Google's own opt-out add-on uses -- an official escape
+// hatch built into Google Analytics itself.
 //
-// 公式アドオンは <script> をページに挿し込む方式なので、CSP の厳しいサイトでは
-// 注入自体がブロックされて効かない。こちらは world:"MAIN" で直接ページの
-// グローバルに置くため CSP の影響を受けない。
+// The official add-on injects a <script> element into the page, so on sites
+// with a strict CSP the injection is blocked and the opt-out silently does
+// nothing. Using world: "MAIN" puts the flag straight on the page's global
+// object instead, which no CSP can stop.
 (() => {
   const prefs = { ioo: () => true };
 
   try {
     Object.defineProperty(window, "_gaUserPrefs", {
-      // 代入されても握りつぶす(サイト側に上書きさせない)。
-      // 非書き込みのデータプロパティにすると strict mode のサイトが
-      // TypeError で落ちるので、setter を no-op にして黙って無視する。
+      // Swallow assignments so a site cannot overwrite the flag.
+      // A non-writable data property would make strict-mode pages throw a
+      // TypeError on assignment, so use a no-op setter and ignore it quietly.
       get: () => prefs,
       set: () => {},
       configurable: false,
       enumerable: false,
     });
   } catch (_) {
-    // すでに定義済みで再定義できない場合は素直に代入だけ試す
+    // Already defined and not redefinable -- just try a plain assignment.
     try {
       window._gaUserPrefs = prefs;
     } catch (__) {
-      /* ここまで来たら諦める。通信ブロック側が残っている */
+      // Give up; the network blocking layer still stands.
     }
   }
 })();

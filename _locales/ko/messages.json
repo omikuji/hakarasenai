@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — Google 애널리틱스 옵트아웃",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "Google 애널리틱스가 나를 측정하지 못하게 합니다. 옵트아웃을 알리고, 그래도 나가려는 측정 데이터를 차단합니다.",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "차단 중 — Google 애널리틱스로 아무것도 보내지 않습니다",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "제외됨 — 이 사이트에서는 아무 일도 하지 않습니다",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "이 사이트 제외하기",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "이 사이트 다시 보호하기",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "이 페이지에서는 동작하지 않습니다",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "http / https 페이지에서만 동작합니다",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "사이트 접근이 허용되지 않았습니다",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "about:addons에서 이 확장 기능에 모든 사이트 접근을 허용하세요",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "Google 애널리틱스로 보내는 데이터를 차단하고, 페이지의 GA 코드에 옵트아웃했음을 알립니다.",
+    "description": "Popup footer: what the extension does."
+  }
+}

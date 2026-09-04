@@ -20,9 +20,13 @@
   }
 }
 
+/* No fixed width: on desktop the popup sizes to content (at least min-width),
+   on Firefox for Android it opens full screen and fills it. */
 body {
-  width: 260px;
-  margin: 0;
+  box-sizing: border-box;
+  min-width: 260px;
+  max-width: 420px;
+  margin: 0 auto;
   padding: 14px;
   background: var(--bg);
   color: var(--fg);
@@ -49,7 +53,9 @@ body {
 
 button {
   width: 100%;
-  padding: 8px;
+  /* 44px tall so it stays a comfortable tap target on Android */
+  min-height: 44px;
+  padding: 8px 12px;
   border: 1px solid var(--line);
   border-radius: 6px;
   background: var(--btn);

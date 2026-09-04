@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — Google Analytics 退出追蹤",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "不讓 Google Analytics 統計你:先告訴它你已選擇退出,再攔截它仍想送出的統計資料。",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "攔截中 — 沒有資料送往 Google Analytics",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "已排除 — 在此網站不做任何事",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "排除此網站",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "重新保護此網站",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "此頁面上不生效",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "僅在 http / https 頁面上運作",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "未授予網站存取權限",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "請在 about:addons 中允許此擴充套件存取所有網站",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "攔截送往 Google Analytics 的資料,並告訴頁面上的 GA 程式碼你已選擇退出。",
+    "description": "Popup footer: what the extension does."
+  }
+}

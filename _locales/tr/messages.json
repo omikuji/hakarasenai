@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — Google Analytics Opt-out",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "Google Analytics'in sizi ölçmesini engeller: devre dışı bıraktığınızı bildirir ve yine de gönderilecek verileri engeller.",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "Engelleniyor — Google Analytics'e hiçbir şey gitmiyor",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "Hariç tutuldu — bu sitede hiçbir şey yapmıyor",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "Bu siteyi hariç tut",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "Bu siteyi yeniden koru",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "Bu sayfada etkin değil",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "Yalnızca http ve https sayfalarında çalışır",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "Sitelere erişim izni verilmedi",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "about:addons üzerinden bu uzantıya tüm sitelere erişim izni verin",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "Google Analytics'e gönderilen verileri engeller ve sayfadaki GA koduna izlemeyi reddettiğinizi bildirir.",
+    "description": "Popup footer: what the extension does."
+  }
+}

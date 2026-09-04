@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — Google Analytics Opt-out",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "Voorkomt dat Google Analytics je meet: meldt je opt-out en blokkeert de gegevens die anders toch verzonden zouden worden.",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "Blokkeert — er gaat niets naar Google Analytics",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "Uitgesloten — doet niets op deze site",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "Deze site uitsluiten",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "Deze site weer beschermen",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "Niet actief op deze pagina",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "Werkt alleen op http- en https-pagina's",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "Geen toegang tot websites verleend",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "Geef deze extensie in about:addons toegang tot alle websites",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "Blokkeert gegevens naar Google Analytics en vertelt de GA-code op de pagina dat je je hebt afgemeld.",
+    "description": "Popup footer: what the extension does."
+  }
+}

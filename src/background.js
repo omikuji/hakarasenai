@@ -1,26 +1,27 @@
-// 除外サイト(ホスト名の配列)の管理と、それに応じた
-//   1) 動的 DNR ルール(そのサイト発の通信をブロック対象から外す)
-//   2) optout.js の登録内容(そのサイトを excludeMatches に入れる)
-// の同期だけを行う。
+// Keeps two things in sync with the list of excluded sites:
+//   1) a dynamic declarativeNetRequest rule that lets those sites through
+//   2) the registration of optout.js, with those sites in excludeMatches
+// That is all this script does.
 
 const STORAGE_KEY = "excluded";
-const ALLOW_RULE_ID = 1000; // 動的ルールは常にこの 1 本だけ使う
+const ALLOW_RULE_ID = 1000; // one dynamic rule, always this id
 const SCRIPT_ID = "hakarasenai-optout";
 
-// ---- 除外リスト -------------------------------------------------------
+// ---- the exclusion list ----------------------------------------------
 
 async function getExcluded() {
   const got = await browser.storage.local.get(STORAGE_KEY);
   return Array.isArray(got[STORAGE_KEY]) ? got[STORAGE_KEY] : [];
 }
 
-// example.com を除外すると www.example.com などのサブドメインもまとめて外れる。
-// 迷いどころを増やしたくないので www. だけ落として正規化する。
+// Excluding example.com also excludes www.example.com and friends. Dropping a
+// leading "www." keeps that one rule easy to explain.
 function normalize(hostname) {
   return hostname.replace(/^www\./, "").toLowerCase();
 }
 
-// http/https のページ以外(about:, moz-extension:, file: など)では何もしない
+// Anything that is not an http(s) page (about:, moz-extension:, file: ...)
+// is out of scope.
 function hostOf(url) {
   try {
     const u = new URL(url);
@@ -35,7 +36,7 @@ function isExcluded(host, list) {
   return list.some((h) => host === h || host.endsWith("." + h));
 }
 
-// ---- 除外の反映 -------------------------------------------------------
+// ---- applying the list ------------------------------------------------
 
 async function syncRules(list) {
   await browser.declarativeNetRequest.updateDynamicRules({
@@ -44,7 +45,7 @@ async function syncRules(list) {
       ? [
           {
             id: ALLOW_RULE_ID,
-            priority: 2, // 静的な block ルール(priority 1)より強い
+            priority: 2, // beats the static block rules, which are priority 1
             action: { type: "allow" },
             condition: { initiatorDomains: list },
           },
@@ -68,14 +69,14 @@ async function syncScript(list) {
   try {
     await browser.scripting.unregisterContentScripts({ ids: [SCRIPT_ID] });
   } catch (_) {
-    // 未登録なら失敗する。無視してよい
+    // Fails when nothing was registered yet. Fine.
   }
   try {
     await browser.scripting.registerContentScripts([script]);
   } catch (e) {
-    // サイトへのアクセス許可が外されているとここで失敗する。
-    // その場合でも通信ブロック(静的 DNR ルール)は生きている。
-    console.warn("Hakarasenai: optout.js の登録に失敗しました", e);
+    // Happens when host permissions have been revoked. The static blocking
+    // rules keep working either way, and permissions.onAdded retries below.
+    console.warn("Hakarasenai: could not register optout.js", e);
   }
 }
 
@@ -86,15 +87,20 @@ async function sync() {
   return list;
 }
 
-// ---- バッジ -----------------------------------------------------------
+// ---- toolbar badge ----------------------------------------------------
 
 async function updateBadge(tabId, url, list) {
   const host = hostOf(url);
   const off = host !== null && isExcluded(host, list ?? (await getExcluded()));
-  await browser.action.setBadgeText({ tabId, text: off ? "OFF" : "" });
-  if (off) {
-    await browser.action.setBadgeBackgroundColor({ tabId, color: "#8a8f98" });
-    await browser.action.setBadgeTextColor({ tabId, color: "#ffffff" });
+  try {
+    await browser.action.setBadgeText({ tabId, text: off ? "OFF" : "" });
+    if (off) {
+      await browser.action.setBadgeBackgroundColor({ tabId, color: "#8a8f98" });
+      await browser.action.setBadgeTextColor({ tabId, color: "#ffffff" });
+    }
+  } catch (_) {
+    // The badge is cosmetic and is not drawn on every platform (Android).
+    // Never let it break the toggle.
   }
 }
 
@@ -104,11 +110,11 @@ async function updateAllBadges() {
   await Promise.all(tabs.map((t) => updateBadge(t.id, t.url, list)));
 }
 
-// ---- 配線 -------------------------------------------------------------
+// ---- wiring -----------------------------------------------------------
 
 browser.runtime.onInstalled.addListener(() => sync().then(updateAllBadges));
 browser.runtime.onStartup.addListener(() => sync().then(updateAllBadges));
-// あとからサイトへのアクセスを許可された場合に登録し直す
+// Re-register once the user grants site access after the fact.
 browser.permissions.onAdded.addListener(() => sync());
 
 browser.tabs.onUpdated.addListener((tabId, changeInfo, tab) => {

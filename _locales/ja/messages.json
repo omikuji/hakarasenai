@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — Google Analytics オプトアウト",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "Google Analytics に測らせない。オプトアウト済みと伝えたうえで、それでも出ていく計測通信をブロックする。",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "遮断中 — GA には送っていません",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "除外中 — このサイトでは何もしません",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "このサイトを除外する",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "このサイトで有効にする",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "このページでは動作しません",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "http / https のページでのみ働きます",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "サイトへのアクセスが許可されていません",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "about:addons のこの拡張の設定で「すべてのサイト」を許可してください",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "Google Analytics への送信をブロックし、ページ内の GA には「オプトアウト済み」と伝えます。",
+    "description": "Popup footer: what the extension does."
+  }
+}

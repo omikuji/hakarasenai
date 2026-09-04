@@ -1,4 +1,5 @@
 const $ = (id) => document.getElementById(id);
+const t = (key) => browser.i18n.getMessage(key);
 
 function show(title, detail, cls) {
   $("host").textContent = title;
@@ -9,35 +10,33 @@ function show(title, detail, cls) {
 
 function render(state) {
   if (!state || !state.host) {
-    show("このページでは動作しません", "http / https のページでのみ働きます");
+    show(t("pageUnsupported"), t("pageUnsupportedDetail"));
     return;
   }
 
   $("host").textContent = state.host;
   $("state").textContent = state.excluded
-    ? "除外中 — このサイトでは何もしません"
-    : "遮断中 — GA には送っていません";
+    ? t("stateExcluded")
+    : t("stateBlocking");
   $("state").className = "state " + (state.excluded ? "off" : "on");
 
   const button = $("toggle");
-  button.textContent = state.excluded
-    ? "このサイトで有効にする"
-    : "このサイトを除外する";
+  button.textContent = state.excluded ? t("buttonInclude") : t("buttonExclude");
   button.hidden = false;
 }
 
 (async () => {
+  document.documentElement.lang = browser.i18n.getUILanguage();
+  document.dir = browser.i18n.getMessage("@@bidi_dir");
+  $("note").textContent = t("popupNote");
+
   const [tab] = await browser.tabs.query({ active: true, currentWindow: true });
   const url = tab?.url;
 
-  // サイトへのアクセス許可を外されると tab.url が読めなくなる。
-  // 「対象外のページ」と区別が付かないと原因不明になるので、分けて出す
+  // tab.url is unreadable once host permissions are revoked. Say so plainly,
+  // otherwise it is indistinguishable from "page out of scope".
   if (!url) {
-    show(
-      "サイトへのアクセスが許可されていません",
-      "about:addons のこの拡張の設定で「すべてのサイト」を許可してください",
-      "off"
-    );
+    show(t("noAccess"), t("noAccessDetail"), "off");
     return;
   }
 

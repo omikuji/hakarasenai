@@ -1,131 +1,182 @@
-# Hakarasenai(測らせない)
+# Hakarasenai (測らせない)
 
-Google Analytics に測らせないだけの Firefox 拡張。
+A Firefox extension that just keeps Google Analytics from measuring you.
+Desktop and Android.
 
-**できること(これがすべて):**
+**What it does (this is all of it):**
 
-1. ページ内の Google Analytics に「この利用者はオプトアウト済み」と伝える
-2. それでも出ていこうとする GA への計測通信をブロックする
-3. 都合が悪いサイトは、ツールバーのボタンから **そのサイトだけ除外** できる
+1. Tells the Google Analytics code on the page that you have opted out
+2. Blocks the measurement hits that would go out anyway
+3. Lets you **exclude a single site** from the toolbar button, if one misbehaves
 
-設定画面なし、フィルタ購読なし、統計もカウンタもなし、Pro 版なし。
+No options page, no filter subscriptions, no counters, no Pro version.
 
-## なぜ作ったか
+[日本語の README](README.ja.md)
 
-Google 公式の「Google Analytics オプトアウト アドオン」は Firefox 版もあるが、
-**ページに `<script>` を挿し込む方式なので、CSP の厳しいサイトでは注入自体がブロックされて効かない**
-(Firefox と Safari は content script にもページの CSP を適用するため)。
-効いていないことがユーザーからは分からない、というのがいちばん困る。
+## Why this exists
 
-この拡張は同じ仕組みを CSP の影響を受けない形(`world: "MAIN"`)で実装し、
-さらに**通信ブロックを二段目に置く**ので、一段目が何かの理由で効かなくても計測データは出ていかない。
+Google ships an official "Google Analytics Opt-out Add-on", and there is a
+Firefox build of it. The trouble is **how** it works: it injects a `<script>`
+element into the page, and Firefox (like Safari) applies the page's CSP to
+content scripts. On any site with a strict CSP the injection is blocked and the
+opt-out quietly does nothing. You cannot tell from the outside that it failed,
+which is the worst possible failure mode for a privacy tool.
 
-## インストール
+Hakarasenai uses the same official opt-out hook, but places it where no CSP can
+reach it (`world: "MAIN"`), and puts network blocking behind it as a second
+layer. If the first layer ever fails, the data still does not leave.
 
-### AMO から(公開後)
+## Install
 
-addons.mozilla.org から入れる。
+### From AMO (once published)
 
-### 自分でビルドして一時的に入れる
+Search for it on [addons.mozilla.org](https://addons.mozilla.org/).
+On Android, install from AMO the same way — the add-on declares
+`gecko_android`, so Firefox for Android will offer it.
 
-zip は作らなくてよい。Firefox で `about:debugging#/runtime/this-firefox` を開き、
-**「一時的なアドオンを読み込む」** → このリポジトリの `manifest.json` を選ぶ。
-Firefox を閉じるまで有効。
+### Load it temporarily from source
 
-AMO に上げる zip が要る場合:
+No build step needed. Open `about:debugging#/runtime/this-firefox`, choose
+**Load Temporary Add-on**, and pick this repository's `manifest.json`.
+It stays until you close Firefox.
+
+Firefox 128 or newer is required, on desktop and on Android, because
+`world: "MAIN"` content scripts landed in 128.
+
+To produce the zip for AMO:
 
 ```bash
-make build   # → dist/hakarasenai-<version>.zip
+make build   # -> dist/hakarasenai-<version>.zip
 ```
 
-`make lint` / `make run` は `web-ext` を使う(`npx` が初回にダウンロードする)。
+`make lint` and `make run` use `web-ext` (fetched by `npx` on first use).
+`make lint` reports two warnings on purpose: the data-collection declaration
+(`data_collection_permissions: none`) is only read by Firefox 140+, and
+`strict_min_version` is 128, so the linter points out the gap. On 128–139 the
+key is simply ignored, which is not worth narrowing support to silence.
 
-Firefox 128 以上が必要(`world: "MAIN"` の content script を使うため)。
+### On Firefox for Android, from source
 
-`make lint` は警告を 2 本出すが、これは想定どおり。
-データ収集の申告(`data_collection_permissions: none`)は Firefox 140 以降でしか読まれないキーで、
-`strict_min_version` を 128 にしているぶん「古い版では未対応」と言われるだけ。
-128〜139 では単に無視されるので、対応範囲を狭めてまで消す必要はないと判断した。
+```bash
+adb devices                      # find your device id
+make run-android DEVICE=<id>
+```
 
-## 仕組み
+Needs adb, USB debugging on the phone, and *Remote debugging via USB* turned on
+in Firefox's settings.
 
-### 一段目 — オプトアウトを伝える
+## How it works
 
-`ga.js` / `analytics.js` / `gtag.js` はいずれも、送信前に
-`window._gaUserPrefs.ioo()`(ioo = is opted out)を見て、true なら送信をやめる分岐を持っている。
-Google 公式アドオンと同じフラグで、GA 自身が用意している正規の抜け道。
+### Layer 1 — announce the opt-out
 
-`src/optout.js` を `world: "MAIN"` の content script として `document_start` に走らせ、
-このフラグをページのグローバルに置く。`<script>` を DOM に挿さないので CSP に止められない。
-サイト側から代入で上書きされないよう、setter は握りつぶす
-(非書き込みプロパティにすると strict mode のサイトが TypeError で落ちるため、
-黙って無視する形にしてある)。
+`ga.js`, `analytics.js` and `gtag.js` all check `window._gaUserPrefs.ioo()`
+(*ioo* = is opted out) before sending, and stop if it returns true. It is the
+same flag Google's own add-on sets — an escape hatch Google Analytics provides
+itself.
 
-### 二段目 — 計測通信をブロックする
+`src/optout.js` is registered as a `world: "MAIN"` content script at
+`document_start`, so the flag is already on the page's global object before any
+site code runs. Nothing is inserted into the DOM, so there is nothing for a CSP
+to block. A site cannot overwrite the flag either: the setter is a no-op rather
+than a non-writable property, so strict-mode pages that assign to it are
+ignored instead of thrown at.
 
-declarativeNetRequest の静的ルール 5 本だけ(`rules/ga.json`)。
+### Layer 2 — block the hits
 
-| 対象 | ブロックするもの |
+Five static declarativeNetRequest rules, in `rules/ga.json`:
+
+| Domain | Blocked |
 |---|---|
-| `*.google-analytics.com` | `/collect` を含む URL(`/collect`, `/j/collect`, `/g/collect`, `/r/collect`, `region1.` などの地域別も含む) |
-| `*.google-analytics.com` | `/batch`(analytics.js のまとめ送信) |
-| `*.analytics.google.com` | `/g/collect`, `/g/s/collect`(GA4 の地域別エンドポイント) |
-| `stats.g.doubleclick.net` | `/collect`(Google シグナル有効時の送信先) |
+| `*.google-analytics.com` | any URL containing `/collect` (`/collect`, `/j/collect`, `/g/collect`, `/r/collect`, and regional hosts like `region1.`) |
+| `*.google-analytics.com` | `/batch` (the batched analytics.js transport) |
+| `*.analytics.google.com` | `/g/collect` and `/g/s/collect` (GA4 regional endpoints) |
+| `stats.g.doubleclick.net` | `/collect` (used when Google Signals is on) |
 
-**ブロックしないもの:** `googletagmanager.com` の `gtag.js` / `gtm.js` 本体、
-`google-analytics.com` が配る `analytics.js` などのスクリプト。
-読み込ませたうえで「送らせない」のがオプトアウトであって、
-ローダーごと落とすとタグマネージャ経由の他機能まで壊れるため。
-一段目のフラグがあるので、読み込まれても GA は送信しない。
+**Not blocked:** `googletagmanager.com` (`gtag.js`, `gtm.js`) and the scripts
+served from `google-analytics.com` itself. Opting out means letting the code
+load and not letting it report; killing the loader would also take out whatever
+else a site drives through Tag Manager. Layer 1 means GA stays silent even
+though it loaded.
 
-主要リソースの取得は止めないので、これが原因でサイトが壊れることはまずない。
+Because no page resource is blocked, this practically never breaks a site.
 
-## サイトごとの除外
+## Excluding a single site
 
-ツールバーのアイコンを押すと、そのサイトの状態が出る。
-「このサイトを除外する」を押すと、そのサイトでは一段目・二段目の両方を止める
-(動的な allow ルールと `excludeMatches` の両方に入る)。除外中はアイコンに `OFF` バッジが出る。
+Click the toolbar icon to see the state for the current site. **Exclude this
+site** turns off both layers there — the site goes into a dynamic `allow` rule
+*and* into the content script's `excludeMatches`. Excluded tabs show an `OFF`
+badge (desktop; Android does not draw extension badges).
 
-除外は **登録ドメイン単位** で、サブドメインも一緒に外れる
-(`example.com` を除外すると `www.example.com` も `shop.example.com` も外れる)。
+Exclusions are **per registrable domain and cover subdomains**: excluding
+`example.com` also excludes `www.example.com` and `shop.example.com`.
 
-自分のサイトの GA を検証したいときなど、一時的に測られたいときに使う。
+Useful when you want to be measured on purpose — verifying GA on your own site,
+for instance.
 
-## 効かないケース(正直なところ)
+## Checking that it works
 
-- **サーバーサイド GTM / ファーストパーティ計測**
-  サイト自身のドメイン(例: `metrics.example.com`)で受けてからサーバー側で GA に転送する構成は、
-  通信の見た目がサイト自身への通信と区別できないので二段目では止められない。
-  ただしこの場合も **一段目のフラグは効く**(送信するのはページ上の gtag.js なので)。
-- **GA 以外の解析ツール** は対象外。これは GA のオプトアウトだけをする拡張。
-- **Measurement Protocol による純サーバーサイド送信**(ブラウザを一切通らないもの)は、
-  ブラウザ拡張の原理的に止められない。
+1. Open a site that uses GA
+2. `F12` → **Network**, filter on `collect`
+3. Requests to `www.google-analytics.com/g/collect` and friends should show as
+   blocked (`NS_ERROR_ABORTED`) — that is layer 2
+4. In the console, `_gaUserPrefs.ioo()` should return `true` — that is layer 1.
+   `_gaUserPrefs is not defined` means the content script did not register; see
+   Troubleshooting
 
-## 効いているか確かめる
+## What it cannot do
 
-1. GA を使っているサイトを開く
-2. `F12` → **ネットワーク** タブで `collect` で絞り込む
-3. `www.google-analytics.com/g/collect` などが **NS_ERROR_ABORTED / ブロック** になっていればニ段目が効いている
-4. コンソールで `_gaUserPrefs.ioo()` と打って `true` が返れば一段目も効いている
-   (`_gaUserPrefs is not defined` なら content script が登録できていない → 下記)
+- **Server-side GTM / first-party measurement.** If a site collects on its own
+  domain (say `metrics.example.com`) and forwards to GA from its server, the
+  traffic is indistinguishable from ordinary traffic to that site, so layer 2
+  cannot catch it. Layer 1 still applies, because the sender is gtag.js on the
+  page.
+- **Analytics products other than GA** are out of scope. This extension opts out
+  of Google Analytics, nothing else.
+- **Pure server-side Measurement Protocol** hits never touch the browser, so no
+  browser extension can stop them.
 
-## トラブルシュート
+## Privacy
 
-- **`_gaUserPrefs` が undefined** → サイトへのアクセス許可が外れている可能性。
-  `about:addons` → この拡張 → 「許可」で「すべてのサイトのデータへのアクセス」を ON にする。
-  許可を戻せば自動で再登録される
-- **Firefox 127 以下で動かない** → `world: "MAIN"` の content script が Firefox 128 からのため。
-  128 以上に上げる
-- **除外したのに止まらない/止まる** → 除外はドメイン単位。
-  サブドメインごと外れる点と、除外の反映はページ再読み込み後である点に注意
+This extension **collects nothing and sends nothing anywhere**. It makes no
+network requests of its own. The only thing stored is the list of hostnames you
+excluded (`storage.local`), and that never leaves the device. The manifest
+declares this as `data_collection_permissions: { required: ["none"] }`.
 
-## プライバシー
+## Translations
 
-この拡張は**何も収集せず、どこにも送信しない**
-(マニフェストの `data_collection_permissions` も `none` で申告している)。
-外部との通信もしない。ブラウザに保存するのは、あなたが除外したサイトのホスト名の一覧
-(`storage.local`)だけで、これも端末内から出ない。
+The UI ships in 15 languages under [`_locales/`](_locales/): English, Japanese,
+German, Spanish, French, Italian, Korean, Dutch, Polish, Portuguese (Brazil),
+Russian, Turkish, Ukrainian, Simplified and Traditional Chinese.
 
-## ライセンス
+To add one, copy `_locales/en/messages.json` to `_locales/<code>/messages.json`,
+translate the `message` values (leave the keys and `description` fields alone),
+and open a pull request. There are eleven strings.
 
-MIT License。
+## Publishing (notes for maintainers)
+
+Firefox will not permanently install an unsigned extension, so distribution goes
+through Mozilla either way:
+
+- **Listed** — upload `dist/*.zip` at the
+  [AMO Developer Hub](https://addons.mozilla.org/developers/). It gets reviewed,
+  signed, and published on addons.mozilla.org. Listed submissions cannot be
+  automated; `web-ext sign --channel=listed` only uploads for review.
+- **Unlisted** (self-distribution) — `make sign` with an
+  [AMO API key](https://addons.mozilla.org/developers/addon/api/key/) returns a
+  signed `.xpi` you can host yourself.
+
+Sources do not need to be attached: nothing here is minified or bundled.
+
+## Troubleshooting
+
+- **`_gaUserPrefs` is undefined** → site access was probably revoked. In
+  `about:addons`, open this extension's **Permissions** and allow access to all
+  sites. It re-registers itself as soon as the permission comes back.
+- **Nothing happens on Firefox 127 or older** → `world: "MAIN"` content scripts
+  need Firefox 128. Upgrade.
+- **An exclusion did not take effect** → exclusions are per domain and include
+  subdomains, and they apply from the next page load.
+
+## License
+
+MIT.

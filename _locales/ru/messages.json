@@ -1,0 +1,46 @@
+{
+  "extensionName": {
+    "message": "Hakarasenai — отказ от Google Analytics",
+    "description": "Name of the extension, shown in about:addons and on AMO."
+  },
+  "extensionDescription": {
+    "message": "Не даёт Google Analytics вас измерять: сообщает об отказе и блокирует данные, которые он всё равно попытался бы отправить.",
+    "description": "One-line description of the extension."
+  },
+  "stateBlocking": {
+    "message": "Блокируется — в Google Analytics ничего не уходит",
+    "description": "Popup: the extension is active on the current site."
+  },
+  "stateExcluded": {
+    "message": "Исключён — на этом сайте ничего не делается",
+    "description": "Popup: the current site is on the exclusion list."
+  },
+  "buttonExclude": {
+    "message": "Исключить этот сайт",
+    "description": "Popup button: add the current site to the exclusion list."
+  },
+  "buttonInclude": {
+    "message": "Снова защищать этот сайт",
+    "description": "Popup button: remove the current site from the exclusion list."
+  },
+  "pageUnsupported": {
+    "message": "Не работает на этой странице",
+    "description": "Popup: the current page is not http/https."
+  },
+  "pageUnsupportedDetail": {
+    "message": "Работает только на страницах http и https",
+    "description": "Popup: explanation for pageUnsupported."
+  },
+  "noAccess": {
+    "message": "Доступ к сайтам не предоставлен",
+    "description": "Popup: host permissions have been revoked."
+  },
+  "noAccessDetail": {
+    "message": "Разрешите этому расширению доступ ко всем сайтам в about:addons",
+    "description": "Popup: how to grant host permissions again."
+  },
+  "popupNote": {
+    "message": "Блокирует данные, отправляемые в Google Analytics, и сообщает коду GA на странице, что вы отказались от отслеживания.",
+    "description": "Popup footer: what the extension does."
+  }
+}
